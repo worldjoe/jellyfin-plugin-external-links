@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>External Links</title>
+</head>
+<body>
+<div id="ExternalLinksConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="ExternalLinksConfigForm">
+                <p>In the JavaScript Injector plugin, add this to the code box so Play opens the external site (prefix the path with your base path, e.g. <code>/jellyfin</code>, if you use one):</p>
+                <pre>const s = document.createElement('script'); s.src = '/ExternalLinks/script.js'; s.defer = true; document.head.appendChild(s);</pre>
+                <p>Name stub files like <code>After School Lunch Special (2019) [imdbid-tt9073068] [fawesome-10647548].strm</code>, or map by IMDb id below.</p>
+                <div class="inputContainer">
+                    <textarea is="emby-textarea" id="Mappings" rows="10" label="Manual mappings (one per line: imdbId = fawesomeId or https://fawesome.tv/... URL)"></textarea>
+                </div>
+                <button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            var pluginId = '475e57da-d5f2-4434-b7a8-e89345cd366b';
+            var page = document.querySelector('#ExternalLinksConfigPage');
+            page.addEventListener('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (c) {
+                    page.querySelector('#Mappings').value = c.Mappings || '';
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+            page.querySelector('#ExternalLinksConfigForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (c) {
+                    c.Mappings = page.querySelector('#Mappings').value;
+                    ApiClient.updatePluginConfiguration(pluginId, c).then(Dashboard.processPluginConfigurationUpdateResult);
+                });
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+name: "External Links"
+guid: "475e57da-d5f2-4434-b7a8-e89345cd366b"
+version: "1.0.0.0"
+targetAbi: "12.4.0.0"
+framework: "net10.0"
+overview: "Open external sources (Fawesome) when playing library items"
+description: "Keeps stub items in your library and redirects Play to an external streaming site."
+category: "General"
+owner: "worldjoe"
+artifacts:
+  - "Jellyfin.Plugin.ExternalLinks.dll"
